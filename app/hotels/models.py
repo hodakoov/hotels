@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, JSON, String
 from app.database import Base
 
 
-class Hotel(Base):
+class Hotels(Base):
     __tablename__ = 'hotels'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
