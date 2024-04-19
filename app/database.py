@@ -8,7 +8,7 @@ DATABASE_URL = (f"postgresql+asyncpg://{settings.DB_USER}:{settings.DB_PASS}@{se
 
 engine = create_async_engine(DATABASE_URL)
 
-async_session_maker = sessionmaker(bing=engine, class_=AsyncSession, expire_on_commit=False)
+async_session_maker = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
 
 class Base(DeclarativeBase):
