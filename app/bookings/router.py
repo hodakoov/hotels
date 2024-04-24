@@ -24,3 +24,11 @@ async def add_booking(
     booking = await BookingDAO.add(user.id, room_id, date_from, date_to)
     if not booking:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Не осталось свободных номеров')
+
+
+@router.delete("/{booking_id}")
+async def remove_booking(
+    booking_id: int,
+    current_user: Users = Depends(get_current_user),
+):
+    await BookingDAO.delete(id=booking_id, user_id=current_user.id)
