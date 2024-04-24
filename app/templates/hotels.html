@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Набронировал</title>
+</head>
+<body>
+    {% for hotel in hotels%}
+        <div>
+            <h1>{{ hotel.name }}</h1>
+            <h4>{{ hotel.location }}</h4>
+            </div>
+    {% endfor %}
+</body>
+</html>
