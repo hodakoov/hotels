@@ -1,11 +1,19 @@
 from datetime import date
 
-from app.hotels.router import router
+from fastapi import APIRouter
+from fastapi_cache.decorator import cache
+
 from app.hotels.rooms.dao import RoomDAO
 from app.hotels.rooms.schemas import SRoomInfo
 
+router = APIRouter(
+    prefix='/hotels',
+    tags=['Отели']
+)
+
 
 @router.get("/{hotel_id}/rooms")
+@cache(expire=30)
 async def get_rooms_by_time(
     hotel_id: int,
     date_from: date,

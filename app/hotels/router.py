@@ -2,6 +2,7 @@ from datetime import date
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, status
+from fastapi_cache.decorator import cache
 
 from app.hotels.dao import HotelDAO
 from app.hotels.schemas import SHotelInfo, SHotel
@@ -10,6 +11,7 @@ router = APIRouter(prefix="/hotels", tags=["Отели"])
 
 
 @router.get("/{location}")
+@cache(expire=30)
 async def get_hotels_by_location_and_time(
     location: str,
     date_from: date,
@@ -24,6 +26,7 @@ async def get_hotels_by_location_and_time(
 
 
 @router.get("/id/{hotel_id}", include_in_schema=True)
+@cache(expire=30)
 async def get_hotel_by_id(
     hotel_id: int,
 ) -> Optional[SHotel]:
