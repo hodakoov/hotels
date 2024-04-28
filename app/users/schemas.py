@@ -1,8 +1,6 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, EmailStr
 
 
 class SUserAuth(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
     email: EmailStr
     password: str

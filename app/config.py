@@ -37,8 +37,10 @@ class Settings(BaseSettings):
     SMTP_USER: str
     SMTP_PASS: str
 
+    # Правки для pydantic v2
     model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8', case_sensitive=True)
 
+    # pydantic v1
     # class Config:
     #     env_file = ".env"
     #     case_sensitive = True
