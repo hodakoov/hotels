@@ -3,8 +3,10 @@ import json
 from datetime import datetime
 
 import pytest
+from httpx import AsyncClient, ASGITransport
 from sqlalchemy import insert
 
+from app.main import app as fastapi_app
 from app.config import settings
 from app.database import Base, engine, async_session_maker
 
@@ -23,7 +25,7 @@ async def prepare_database():
         await conn.run_sync(Base.metadata.create_all)
 
     def open_mock_json(model: str):
-        with open(f"app/tests/mock_{model}.json", "r") as file:
+        with open(f"app/tests/mock_{model}.json", encoding='UTF-8') as file:
             return json.load(file)
 
     hotels = open_mock_json("hotels")
@@ -57,3 +59,16 @@ def event_loop(request):
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
+
+
+@pytest.fixture(scope="function")
+async def ac():
+    "Асинхронный клиент для тестирования эндпоинтов"
+    async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
+        yield ac
+
+
+@pytest.fixture(scope="function")
+async def session():
+    async with async_session_maker() as session:
+        yield session
