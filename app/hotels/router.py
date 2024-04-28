@@ -4,6 +4,7 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException, status
 from fastapi_cache.decorator import cache
 
+from app.exceptions import DateFromCannotBeAfterDateTo, CannotBookHotelForLongPeriod
 from app.hotels.dao import HotelDAO
 from app.hotels.schemas import SHotelInfo, SHotel
 
@@ -18,9 +19,9 @@ async def get_hotels_by_location_and_time(
     date_to: date,
 ) -> list[SHotelInfo]:
     if date_from > date_to:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Дата заезда не может быть позже даты выезда")
+        raise DateFromCannotBeAfterDateTo
     if (date_to - date_from).days > 31:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Невозможно забронировать отель сроком более месяца")
+        raise CannotBookHotelForLongPeriod
     hotels = await HotelDAO.find_all(location, date_from, date_to)
     return hotels
 

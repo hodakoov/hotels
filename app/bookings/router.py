@@ -5,6 +5,7 @@ from fastapi_cache.decorator import cache
 
 from app.bookings.dao import BookingDAO
 from app.bookings.schemas import SBooking
+from app.exceptions import RoomCannotBeBooked
 from app.tasks.tasks import send_booking_confirmation_email
 from app.users.dependencies import get_current_user
 from app.users.models import Users
@@ -31,7 +32,7 @@ async def add_booking(
                                        date_to
                                        )
     if not booking_add:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Не осталось свободных номеров')
+        raise RoomCannotBeBooked
     booking_dict = {
         'room_id': booking_add.room_id,
         'date_from': booking_add.date_from,
