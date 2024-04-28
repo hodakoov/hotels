@@ -1,7 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class SHotel(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     name: str
     location: str
@@ -11,4 +13,6 @@ class SHotel(BaseModel):
 
 
 class SHotelInfo(SHotel):
+    model_config = ConfigDict(from_attributes=True)
+
     rooms_left: int
