@@ -47,7 +47,6 @@ async def prepare_database():
         ]:
             query = insert(Model).values(values)
             await session.execute(query)
-
         await session.commit()
 
 
