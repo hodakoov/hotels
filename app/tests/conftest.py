@@ -24,8 +24,11 @@ def mock_cache(*args, **kwargs):
         @wraps(func)
         async def inner(*args, **kwargs):
             return await func(*args, **kwargs)
+
         return inner
+
     return wrapper
+
 
 mock.patch("fastapi_cache.decorator.cache", mock_cache).start()
 
@@ -33,16 +36,16 @@ mock.patch("fastapi_cache.decorator.cache", mock_cache).start()
 from app.main import app as fastapi_app
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 async def prepare_database():
-    assert settings.MODE == 'TEST'
+    assert settings.MODE == "TEST"
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
     def open_mock_json(model: str):
-        with open(f"app/tests/mock_{model}.json", encoding='UTF-8') as file:
+        with open(f"app/tests/mock_{model}.json", encoding="UTF-8") as file:
             return json.load(file)
 
     hotels = open_mock_json("hotels")
@@ -80,7 +83,9 @@ def event_loop(request):
 @pytest.fixture(scope="function")
 async def ac():
     "Асинхронный клиент для тестирования эндпоинтов"
-    async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
+    async with AsyncClient(
+        transport=ASGITransport(app=fastapi_app), base_url="http://test"
+    ) as ac:
         yield ac
 
 
@@ -88,9 +93,12 @@ async def ac():
 async def authenticated_ac():
     "Асинхронный аутентифицированный клиент для тестирования эндпоинтов"
     async with AsyncClient(app=fastapi_app, base_url="http://test") as ac:
-        await ac.post("auth/login", json={
-            "email": "test@test.com",
-            "password": "test",
-        })
+        await ac.post(
+            "auth/login",
+            json={
+                "email": "test@test.com",
+                "password": "test",
+            },
+        )
         assert ac.cookies["booking_access_token"]
         yield ac

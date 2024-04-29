@@ -6,10 +6,7 @@ from fastapi_cache.decorator import cache
 from app.hotels.rooms.dao import RoomDAO
 from app.hotels.rooms.schemas import SRoomInfo
 
-router = APIRouter(
-    prefix='/hotels',
-    tags=['Отели']
-)
+router = APIRouter(prefix="/hotels", tags=["Отели"])
 
 
 @router.get("/{hotel_id}/rooms")

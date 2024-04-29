@@ -50,12 +50,12 @@ class RoomDAO(BaseDAO):
             select(
                 Rooms.__table__.columns,
                 (Rooms.price * (date_to - date_from).days).label("total_cost"),
-                (Rooms.quantity - func.coalesce(booked_rooms.c.rooms_booked, 0)).label("rooms_left"),
+                (Rooms.quantity - func.coalesce(booked_rooms.c.rooms_booked, 0)).label(
+                    "rooms_left"
+                ),
             )
             .join(booked_rooms, booked_rooms.c.room_id == Rooms.id, isouter=True)
-            .where(
-                Rooms.hotel_id == hotel_id
-            )
+            .where(Rooms.hotel_id == hotel_id)
         )
         async with async_session_maker() as session:
             # print(get_rooms.compile(engine, compile_kwargs={"literal_binds": True}))

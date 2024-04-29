@@ -5,7 +5,7 @@ from app.database import Base
 
 
 class Hotels(Base):
-    __tablename__ = 'hotels'
+    __tablename__ = "hotels"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
@@ -17,4 +17,4 @@ class Hotels(Base):
     rooms = relationship("Rooms", back_populates="hotel")
 
     def __str__(self):
-        return f'Отель: {self.name} {self.location[:30]}'
+        return f"Отель: {self.name} {self.location[:30]}"

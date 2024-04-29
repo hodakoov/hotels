@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    MODE: Literal['DEV', 'TEST', 'PROD']
+    MODE: Literal["DEV", "TEST", "PROD"]
 
     DB_HOST: str
     DB_PORT: int
@@ -38,7 +38,9 @@ class Settings(BaseSettings):
     SMTP_PASS: str
 
     # Правки для pydantic v2
-    model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8', case_sensitive=True)
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8", case_sensitive=True
+    )
 
     # pydantic v1
     # class Config:

@@ -15,10 +15,7 @@ def process_pic(
 ):
     im_path = Path(path)
     im = Image.open(im_path)
-    for width, height in [
-        (1000, 500),
-        (200, 100)
-    ]:
+    for width, height in [(1000, 500), (200, 100)]:
         resized_img = im.resize(size=(width, height))
         resized_img.save(f"app/static/images/resized_{width}_{height}_{im_path.name}")
 
@@ -29,7 +26,7 @@ def send_booking_confirmation_email(
     email_to: EmailStr,
 ):
     # Удалите строчку ниже для отправки сообщения на свой email, а на пользовательский
-    email_to = settings.SMTP_USER
+    # email_to = settings.SMTP_USER
     msg_content = create_booking_confirmation_template(booking, email_to)
 
     with smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT) as server:
