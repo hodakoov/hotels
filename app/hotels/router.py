@@ -4,9 +4,9 @@ from typing import Optional
 from fastapi import APIRouter
 from fastapi_cache.decorator import cache
 
-from app.exceptions import DateFromCannotBeAfterDateTo, CannotBookHotelForLongPeriod
+from app.exceptions import CannotBookHotelForLongPeriod, DateFromCannotBeAfterDateTo
 from app.hotels.dao import HotelDAO
-from app.hotels.schemas import SHotelInfo, SHotel
+from app.hotels.schemas import SHotel, SHotelInfo
 
 router = APIRouter(prefix="/hotels", tags=["Отели"])
 

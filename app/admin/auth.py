@@ -1,4 +1,5 @@
 from typing import Union
+
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
