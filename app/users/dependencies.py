@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from fastapi import Depends, HTTPException, Request, status
+from fastapi import Depends, Request
 from jose import jwt, JWTError
 
 from app.config import settings

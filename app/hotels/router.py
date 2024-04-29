@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 from fastapi_cache.decorator import cache
 
 from app.exceptions import DateFromCannotBeAfterDateTo, CannotBookHotelForLongPeriod
