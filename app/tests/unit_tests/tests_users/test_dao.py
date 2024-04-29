@@ -7,7 +7,7 @@ from app.users.dao import UserDAO
                          [
                              (1, "test@test.com", True),
                              (2, "valera@example.com", True),
-                             (3, "NEtest@NEtest.com", False),
+                             (100, "NEtest@NEtest.com", False),
                          ])
 async def test_find_user_by_id(user_id, email, is_exist):
     user = await UserDAO.find_by_id(user_id)

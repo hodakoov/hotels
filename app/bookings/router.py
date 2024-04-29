@@ -2,6 +2,7 @@ from datetime import date
 
 from fastapi import APIRouter, Depends
 from fastapi_cache.decorator import cache
+from starlette import status
 
 from app.bookings.dao import BookingDAO
 from app.bookings.schemas import SBooking
@@ -19,7 +20,7 @@ async def get_bookings(user: Users = Depends(get_current_user)) -> list[SBooking
     return await BookingDAO.find_all(user_id=user.id)
 
 
-@router.post("")
+@router.post("", status_code=status.HTTP_201_CREATED)
 async def add_booking(
         # booking: SNewBooking,
         room_id: int,
