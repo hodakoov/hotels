@@ -11,3 +11,7 @@ use_parentheses = true
 ensure_newline_before_comments = true
 line_length = 88
 extend_skip = ["migrations"]
+
+[tool.pyright]
+include = ['app']
+exclude = ['migrations']

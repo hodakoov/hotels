@@ -21,7 +21,7 @@ from app.users.router import router as users_router
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI):  # noqa
     redis = aioredis.from_url(
         f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}",
         encoding="utf8",
