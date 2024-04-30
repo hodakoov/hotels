@@ -1,6 +1,7 @@
 import time
 from contextlib import asynccontextmanager
 
+import sentry_sdk
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -80,3 +81,10 @@ admin.add_view(BookingsAdmin)
 #     process_time = time.time() - start_time
 #     logger.info("Request handling time", extra={"process_time": round(process_time, 4)})
 #     return response
+
+
+sentry_sdk.init(
+    dsn="https://5efb5fbe6db600668117a86a4444ee07@o4507176366440448.ingest.us.sentry.io/4507176368275456",
+    traces_sample_rate=1.0,
+    profiles_sample_rate=1.0,
+)
