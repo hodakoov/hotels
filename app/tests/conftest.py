@@ -70,12 +70,14 @@ async def prepare_database():
 
 # Взято из документации к pytest-asyncio
 # Создаем новый event loop для прогона тестов
-@pytest.fixture(scope="session")
-def event_loop(request):
-    """Create an instance of the default event loop for each test case."""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
+# №2  pytest ругается ( DeprecationWarning: The event_loop fixture provided by pytest-asyncio
+# has been redefined in.." и говорит используй scope="session"
+# @pytest.fixture(scope="session")
+# def event_loop(request):
+#     """Create an instance of the default event loop for each test case."""
+#     loop = asyncio.get_event_loop_policy().new_event_loop()
+#     yield loop
+#     loop.close()
 
 
 @pytest.fixture(scope="function")
@@ -90,7 +92,9 @@ async def ac():
 @pytest.fixture(scope="session")
 async def authenticated_ac():
     "Асинхронный аутентифицированный клиент для тестирования эндпоинтов"
-    async with AsyncClient(app=fastapi_app, base_url="http://test") as ac:
+    async with AsyncClient(
+        transport=ASGITransport(app=fastapi_app), base_url="http://test"
+    ) as ac:
         await ac.post(
             "auth/login",
             json={
