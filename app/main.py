@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
+from fastapi_versioning import VersionedFastAPI
 from redis import asyncio as aioredis
 from sqladmin import Admin
 
@@ -36,9 +37,6 @@ async def lifespan(app: FastAPI):  # noqa
 
 app = FastAPI(lifespan=lifespan)
 
-staticFiles = StaticFiles(directory="app/static")
-app.mount(path="/static", app=staticFiles, name="static")
-
 app.include_router(users_router)
 app.include_router(booking_router)
 app.include_router(hotels_router)
@@ -67,11 +65,23 @@ app.add_middleware(
     ],
 )
 
+app = VersionedFastAPI(app,
+    version_format='{major}',
+    prefix_format='/v{major}',
+    # description='Greet users with a nice message',
+    # middleware=[
+    #    Middleware(SessionMiddleware, secret_key='mysecretkey')
+    #]
+)
+
 admin = Admin(app, engine, authentication_backend=authentication_backend)
 admin.add_view(UsersAdmin)
 admin.add_view(HotelsAdmin)
 admin.add_view(RoomsAdmin)
 admin.add_view(BookingsAdmin)
+
+staticFiles = StaticFiles(directory="app/static")
+app.mount(path="/static", app=staticFiles, name="static")
 
 
 # @app.middleware("http")

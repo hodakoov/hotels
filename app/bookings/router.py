@@ -2,6 +2,7 @@ from datetime import date
 
 from fastapi import APIRouter, Depends
 from fastapi_cache.decorator import cache
+from fastapi_versioning import version
 from starlette import status
 
 from app.bookings.dao import BookingDAO
@@ -15,7 +16,15 @@ router = APIRouter(prefix="/bookings", tags=["Бронирования"])
 
 
 @router.get("")
+@version(1)
 @cache(expire=30)
+async def get_bookings(user: Users = Depends(get_current_user)) -> list[SBooking]:
+    return await BookingDAO.find_all(user_id=user.id)
+
+
+@router.get("")
+@version(2)
+@cache(expire=10)
 async def get_bookings(user: Users = Depends(get_current_user)) -> list[SBooking]:
     return await BookingDAO.find_all(user_id=user.id)
 
