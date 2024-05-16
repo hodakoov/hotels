@@ -3,6 +3,8 @@ services:
   db:
     image: postgres:16
     container_name: hotels_db
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
     env_file:
       - .env-non-dev
     ports:
@@ -29,7 +31,7 @@ services:
         condition: service_started
     command: ["/booking/docker/app.sh"]
     ports:
-      - 9000:8000
+      - 8000:8000
 
   celery:
     build:
@@ -52,6 +54,36 @@ services:
       - redis
     ports:
       - 5555:5555
+
+  prometheus:
+    image: prom/prometheus:v2.43.0
+    container_name: prometheus
+    depends_on:
+      fastapi:
+        condition: service_started
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheusdata:/prometheus
+    restart: unless-stopped
+    ports:
+      - 9090:9090
+
+  grafana:
+    image: grafana/grafana:9.4.7
+    container_name: grafana
+    depends_on:
+      fastapi:
+        condition: service_started
+    volumes:
+      - grafanadata:/var/lib/grafana
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+
+volumes:
+  postgresdata:
+  grafanadata:
+  prometheusdata:
 
 
 
